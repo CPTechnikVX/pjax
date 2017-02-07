@@ -22,7 +22,7 @@ var Pjax = function(options) {
     this.parseDOM(document)
 
     on(window, "popstate", function(st) {
-      if (st.state) {
+      if (st.state && st.state.pjax) {
         var opt = clone(this.options)
         opt.url = st.state.url
         opt.title = st.state.title
@@ -183,6 +183,7 @@ Pjax.prototype = {
           this.lastUid = this.maxUid = newUid()
           this.firstrun = false
           window.history.replaceState({
+            pjax: true,
             url: window.location.href,
             title: document.title,
             uid: this.maxUid
@@ -193,6 +194,7 @@ Pjax.prototype = {
         // Update browser history
         this.lastUid = this.maxUid = newUid()
         window.history.pushState({
+          pjax: true,
           url: href,
           title: options.title,
           uid: this.maxUid
