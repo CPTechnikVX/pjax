@@ -151,9 +151,11 @@ Pjax.prototype = {
     trigger(document, "pjax:send", options);
 
     // Do the request
-    this.doRequest(href, function(html) {
+    this.doRequest(href, function(html, response) {
       // Fail if unable to load HTML via AJAX
-      if (html === false) {
+      if (!html) {
+        options.response = response;
+        options.url = href;
         trigger(document,"pjax:complete pjax:error", options)
 
         return
