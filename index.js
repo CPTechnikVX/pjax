@@ -148,6 +148,10 @@ Pjax.prototype = {
   loadUrl: function(href, options) {
     this.log("load href", href, options)
 
+    if(typeof options.onBeforeSend === 'function') {
+        options.onBeforeSend(options);
+    }
+
     trigger(document, "pjax:send", options);
 
     // Do the request
@@ -188,9 +192,14 @@ Pjax.prototype = {
             pjax: true,
             url: window.location.href,
             title: document.title,
-            uid: this.maxUid
+            uid: this.maxUid,
+            pjaxStateOptions: options.stateOptions
           },
           document.title)
+        } else {
+          if(typeof options.onBeforePushState === 'function') {
+            options.onBeforePushState(options);
+          }
         }
 
         // Update browser history
