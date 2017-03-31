@@ -148,8 +148,13 @@ Pjax.prototype = {
   loadUrl: function(href, options) {
     this.log("load href", href, options)
 
-    if(typeof options.onBeforeSend === 'function') {
-        options.onBeforeSend(options);
+    if (typeof options.onBeforeSend === 'function') {
+        retVal = options.onBeforeSend(options);
+
+        // disable request
+        if (retVal === false) {
+          return false;
+        }
     }
 
     trigger(document, "pjax:send", options);
